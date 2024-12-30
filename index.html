@@ -45,6 +45,12 @@
             }
         }
 
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
         .header {
             background: linear-gradient(135deg, #43A047 0%, #66BB6A 100%);
             color: white;
@@ -128,6 +134,157 @@
             font-size: 0.9em;
         }
 
+        /* 验证层样式 */
+        .auth-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .auth-card {
+            background: white;
+            padding: 30px;
+            border-radius: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 320px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-card::before {
+            content: '🌱';
+            position: absolute;
+            top: -20px;
+            left: -20px;
+            font-size: 40px;
+            opacity: 0.1;
+            transform: rotate(-45deg);
+        }
+
+        .auth-card::after {
+            content: '🌿';
+            position: absolute;
+            bottom: -20px;
+            right: -20px;
+            font-size: 40px;
+            opacity: 0.1;
+            transform: rotate(45deg);
+        }
+
+        .auth-title {
+            color: #2E7D32;
+            font-size: 1.5em;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .auth-subtitle {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 24px;
+        }
+
+        .input-container {
+            position: relative;
+            margin: 20px 0;
+        }
+
+        .auth-input {
+            width: 100%;
+            max-width: 240px;
+            padding: 12px 12px 12px 40px;
+            border: 3px solid #E8F5E9;
+            border-radius: 50px;
+            font-size: 1em;
+            outline: none;
+            transition: all 0.3s;
+            background: #F5F5F5;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .auth-input:focus {
+            border-color: #4CAF50;
+            background: white;
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.1);
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.2em;
+            color: #4CAF50;
+            pointer-events: none;
+            transition: all 0.3s;
+        }
+
+        .auth-input:focus + .input-icon {
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .auth-button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 32px;
+            border-radius: 50px;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
+        }
+
+        .auth-button:active {
+            transform: translateY(0);
+        }
+
+        .pea-mascot {
+            font-size: 60px;
+            margin-bottom: 20px;
+            animation: wiggle 2s infinite;
+            display: inline-block;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .error-message {
+            color: #e57373;
+            margin-top: 12px;
+            font-size: 0.9em;
+            opacity: 0;
+            transform: translateY(-10px);
+            transition: all 0.3s;
+        }
+
+        .error-message.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
         @media (min-width: 768px) {
             .card {
                 max-width: 600px;
@@ -149,40 +306,130 @@
     </style>
 </head>
 <body>
-    <div class="card">
-        <div class="header">
-            <div class="name">杨豌豆</div>
-            <div class="name-en">YANG WAN DOU</div>
+    <!-- 验证层 -->
+    <div id="auth-layer" class="auth-layer">
+        <div class="auth-card">
+            <div class="pea-mascot">🌱</div>
+            <h2 class="auth-title">豌豆宝宝的秘密花园</h2>
+            <p class="auth-subtitle">需要一点点魔法才能进入哦～</p>
+            <div class="input-container">
+                <input type="password" id="auth-input" class="auth-input" placeholder="请输入通关密语" maxlength="20">
+                <span class="input-icon">🔑</span>
+            </div>
+            <button onclick="verifyPassword()" class="auth-button">开启精彩</button>
+            <div id="error-message" class="error-message">噢～密语不对呢，再试试吧～</div>
+        </div>
+    </div>
+
+    <!-- 主要内容 -->
+    <div id="main-content" class="hidden">
+        <div class="card">
+            <div class="header">
+                <div class="name">杨豌豆</div>
+                <div class="name-en">YANG WAN DOU</div>
+            </div>
+            
+            <div class="content">
+                <div class="section">
+                    <div class="pea-icon">🌱</div>
+                </div>
+                
+                <div class="section">
+                    <div class="quote">
+                        愿你如春日里的豌豆<br>
+                        在阳光下快乐生长
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <p style="text-align: center;">
+                        生如夏花，悦如清风<br>
+                        愿你永远保持童真，充满好奇
+                    </p>
+                </div>
+                
+                <div class="pea-icon">🍃</div>
+            </div>
         </div>
         
-        <div class="content">
-            <div class="section">
-                <div class="pea-icon">🌱</div>
-            </div>
-            
-            <div class="section">
-                <div class="quote">
-                    愿你如春日里的豌豆<br>
-                    在阳光下快乐生长
-                </div>
-            </div>
-            
-            <div class="section">
-                <p style="text-align: center;">
-                    生如夏花，悦如清风<br>
-                    愿你永远保持童真，充满好奇
-                </p>
-            </div>
-            
-            <div class="pea-icon">🍃</div>
+        <div class="footer">
+            © <span id="current-year"></span> yangwandou.com
         </div>
     </div>
-    
-     <div class="footer">
-        © <span id="current-year"></span> yangwandou.com
-    </div>
+
     <script>
-        document.getElementById('current-year').textContent = new Date().getFullYear();
+        // DOM加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化年份
+            const currentYearElement = document.getElementById('current-year');
+            if (currentYearElement) {
+                currentYearElement.textContent = new Date().getFullYear();
+            }
+
+            // 检查是否已验证
+            if (localStorage.getItem('wandou-auth') === 'true') {
+                showMainContent();
+            }
+
+            // 添加回车键支持
+            const authInput = document.getElementById('auth-input');
+            if (authInput) {
+                authInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        verifyPassword();
+                    }
+                });
+
+                // 输入时隐藏错误消息
+                authInput.addEventListener('input', function() {
+                    const errorMessage = document.getElementById('error-message');
+                    if (errorMessage) {
+                        errorMessage.classList.remove('show');
+                    }
+                    this.style.borderColor = '#E8F5E9';
+                });
+            }
+        });
+
+        // 验证功能
+        function verifyPassword() {
+            const input = document.getElementById('auth-input');
+            const password = input.value;
+            const correctPassword = 'wandou';
+            const errorMessage = document.getElementById('error-message');
+
+            if (password === correctPassword) {
+                localStorage.setItem('wandou-auth', 'true');
+                showMainContent();
+            } else {
+                errorMessage.classList.add('show');
+                input.style.borderColor = '#e57373';
+                
+                // 晃动效果
+                const authCard = document.querySelector('.auth-card');
+                authCard.style.animation = 'shake 0.5s';
+                setTimeout(() => {
+                    authCard.style.animation = '';
+                }, 500);
+
+                // 3秒后隐藏错误消息
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                    input.style.borderColor = '#E8F5E9';
+                }, 3000);
+            }
+        }
+
+        // 显示主要内容
+        function showMainContent() {
+            const authLayer = document.getElementById('auth-layer');
+            const mainContent = document.getElementById('main-content');
+            
+            if (authLayer && mainContent) {
+                authLayer.classList.add('hidden');
+                mainContent.classList.remove('hidden');
+            }
+        }
     </script>
 </body>
 </html>
