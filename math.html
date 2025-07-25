@@ -213,64 +213,11 @@
             animation: correctBounce 0.6s ease;
         }
 
-        .choice-btn.correct::after {
-            content: '✓';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #FFFFFF;
-            color: #4CAF50;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            border: 3px solid #4CAF50;
-        }
-
         .choice-btn.incorrect {
             background: #F44336;
             border-color: #D32F2F;
             box-shadow: 0 6px 0 #C62828;
             animation: incorrectShake 0.6s ease;
-        }
-
-        .choice-btn.incorrect::after {
-            content: '✗';
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #FFFFFF;
-            color: #F44336;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-            font-weight: bold;
-            border: 3px solid #F44336;
-        }
-
-        .choice-btn.disabled {
-            opacity: 0.7;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        @keyframes correctBounce {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.15); }
-        }
-
-        @keyframes incorrectShake {
-            0%, 100% { transform: translateX(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
-            20%, 40%, 60%, 80% { transform: translateX(10px); }
         }
 
         .feedback {
@@ -297,12 +244,6 @@
             background: #FFCDD2;
             color: #C62828;
             border-color: #F44336;
-        }
-
-        @keyframes celebration {
-            0%, 100% { transform: scale(1); }
-            25% { transform: scale(1.05) rotate(1deg); }
-            75% { transform: scale(1.05) rotate(-1deg); }
         }
 
         .buttons {
@@ -369,11 +310,6 @@
             animation: spin 2s ease-in-out infinite;
         }
 
-        @keyframes spin {
-            0%, 100% { transform: rotate(0deg); }
-            50% { transform: rotate(15deg); }
-        }
-
         .final-score .message {
             font-size: 20px;
             font-weight: bold;
@@ -429,31 +365,142 @@
             100% { transform: scale(1); }
         }
 
+        /* 移动设备适配 */
         @media (max-width: 480px) {
             .game-container {
-                padding: 15px;
-                margin: 10px;
+                padding: 10px;
+                margin: 5px;
+                max-width: 100%;
             }
             
             .title {
-                font-size: 22px;
-            }
-            
-            .question {
-                font-size: 32px;
-            }
-            
-            .choice-btn {
-                padding: 18px 12px;
-                font-size: 24px;
+                font-size: 20px;
+                margin-bottom: 10px;
             }
             
             .characters {
-                font-size: 30px;
+                font-size: 24px;
+                gap: 15px;
+                margin: 10px 0;
+            }
+            
+            .score-board {
+                margin-bottom: 15px;
+                gap: 8px;
+            }
+            
+            .score {
+                padding: 8px 10px;
+                font-size: 14px;
+            }
+            
+            .progress-container {
+                margin: 15px 0;
+            }
+            
+            .progress-label {
+                font-size: 12px;
+            }
+            
+            .progress-bar {
+                height: 15px;
+            }
+            
+            .question-container {
+                padding: 15px 10px;
+                margin: 15px 0;
+            }
+            
+            .question {
+                font-size: 28px;
+            }
+            
+            .question-container::before {
+                font-size: 28px;
+                top: -15px;
+            }
+            
+            .choices {
+                gap: 10px;
+                margin: 15px 0;
+            }
+            
+            .choice-btn {
+                padding: 12px 8px;
+                font-size: 22px;
+                border-width: 3px;
+            }
+            
+            .feedback {
+                font-size: 18px;
+                margin: 15px 0;
+                min-height: 50px;
+                padding: 10px;
+            }
+            
+            .buttons {
+                gap: 10px;
+                margin: 15px 0;
+            }
+            
+            .btn {
+                padding: 12px 20px;
+                font-size: 16px;
+                border-width: 3px;
+            }
+            
+            .final-score {
+                padding: 20px;
+                margin: 15px 0;
+            }
+            
+            .final-score .emoji {
+                font-size: 40px;
+            }
+            
+            .final-score .message {
+                font-size: 18px;
+            }
+            
+            .final-score .accuracy {
+                font-size: 14px;
+            }
+            
+            .reward {
+                padding: 15px;
+                margin-top: 15px;
+            }
+            
+            .reward-title {
+                font-size: 20px;
+            }
+            
+            .reward-emoji {
+                font-size: 32px;
+            }
+            
+            .reward-message {
+                font-size: 16px;
             }
         }
 
-        /* 增加一些装饰性星星 */
+        /* 更小屏幕的额外优化 */
+        @media (max-width: 360px) {
+            .title {
+                font-size: 18px;
+            }
+            
+            .question {
+                font-size: 24px;
+            }
+            
+            .choice-btn {
+                font-size: 20px;
+                padding: 10px 6px;
+            }
+        }
+
+        /* 装饰性星星 */
         .stars {
             position: fixed;
             top: 0;
@@ -475,6 +522,28 @@
         @keyframes twinkle {
             0%, 100% { opacity: 0.3; transform: scale(1); }
             50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        @keyframes spin {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(15deg); }
+        }
+
+        @keyframes celebration {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.05) rotate(1deg); }
+            75% { transform: scale(1.05) rotate(-1deg); }
+        }
+
+        @keyframes correctBounce {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.15); }
+        }
+
+        @keyframes incorrectShake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-10px); }
+            20%, 40%, 60%, 80% { transform: translateX(10px); }
         }
     </style>
 </head>
@@ -682,20 +751,30 @@
                 const encouragement = encouragements[Math.floor(Math.random() * encouragements.length)];
                 feedback.textContent = encouragement;
                 feedback.className = 'feedback correct';
+                
+                // 答对题目后3秒自动跳转
+                setTimeout(() => {
+                    if (totalQuestions < maxQuestions) {
+                        nextQuestion();
+                    } else {
+                        endGame();
+                    }
+                }, 3000);
             } else {
                 selectedBtn.classList.add('incorrect');
                 correctBtn.classList.add('correct');
                 const consolation = consolations[Math.floor(Math.random() * consolations.length)];
                 feedback.textContent = `${consolation} 正确答案是 ${currentQuestion.correctAnswer}`;
                 feedback.className = 'feedback incorrect';
+                
+                // 答错时显示"下一题"按钮
+                setTimeout(() => {
+                    document.getElementById('next-btn').style.display = 'inline-block';
+                }, 2000);
             }
             
             updateScoreBoard();
             updateProgressBar();
-            
-            setTimeout(() => {
-                document.getElementById('next-btn').style.display = 'inline-block';
-            }, 2000);
         }
 
         function updateScoreBoard() {
@@ -768,6 +847,7 @@
             updateScoreBoard();
         }
 
+        // 初始化分数显示
         updateScoreBoard();
     </script>
 </body>
